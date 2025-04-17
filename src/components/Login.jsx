@@ -1,11 +1,21 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import Header from "./Header";
+import { checkValidData } from "../utils/validate";
 
 const Login = () => {
   const [issignin, setsignin] = useState(true);
+  const [ErrorMessage, setErrorMessage] = useState(null);
+  const email = useRef(null);
+  const password = useRef(null);
 
   const toggle = () => {
     setsignin(!issignin);
+  };
+
+  const handleButtonClick = () => {
+    const message = checkValidData(email.current.value, password.current.value);
+
+    setErrorMessage(message);
   };
 
   return (
@@ -18,7 +28,10 @@ const Login = () => {
           className=" top-0 left-0 w-full h-full object-cover -z-10"
         />
       </div>
-      <form className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-black/75 p-10 w-3/12 max-w-md rounded-md text-white">
+      <form
+        className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-black/75 p-10 w-3/12 max-w-md rounded-md text-white"
+        onSubmit={(e) => e.preventDefault()}
+      >
         <h1 className="font-bold text-3xl mb-6">
           {issignin ? "Sign In" : "Sign Up"}
         </h1>
@@ -34,15 +47,24 @@ const Login = () => {
         <input
           type="text"
           placeholder="Email"
+          ref={email}
           className="py-3 px-4 mb-4 w-full rounded bg-zinc-800 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-red-600"
         />
         <input
           type="password"
           placeholder="Password"
+          ref={password}
           className="py-3 px-4 mb-6 w-full rounded bg-zinc-800 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-red-600"
         />
-
-        <button className="w-full bg-red-600 hover:bg-red-700 text-white font-semibold py-3 rounded">
+        {ErrorMessage && (
+          <p className="bg-red-500/10 border border-red-600 text-red-500 text-sm px-4 py-2 rounded mb-4">
+            ⚠️ {ErrorMessage}
+          </p>
+        )}
+        <button
+          className="w-full bg-red-600 hover:bg-red-700 text-white font-semibold py-3 rounded"
+          onClick={handleButtonClick}
+        >
           {issignin ? "Sign In" : "Sign Up"}
         </button>
 
