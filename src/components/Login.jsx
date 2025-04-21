@@ -9,6 +9,7 @@ import {
 } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
+import { addUser } from "../utils/UserSlice";
 
 const Login = () => {
   const [issignin, setsignin] = useState(true);
@@ -16,7 +17,7 @@ const Login = () => {
   const email = useRef(null);
   const password = useRef(null);
   const name = useRef(null);
-  const navigate = useNavigate(); // fixed typo
+  const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const toggle = () => setsignin(!issignin);
@@ -35,25 +36,23 @@ const Login = () => {
       )
         .then((userCredential) => {
           const user = userCredential.user;
-          console.log("Signed up:", user);
 
-          // Update profile with name after signup
           updateProfile(user, {
             displayName: name.current.value,
             photoURL: "https://avatars.githubusercontent.com/u/139048048?v=4",
           })
             .then(() => {
-              const { uid, email, displayName, photoURL } = auth.currentUser;
-              console.log("Profile updated");
+              // Manually create updated user object to dispatch
+              const updatedUser = {
+                uid: user.uid,
+                email: user.email,
+                displayName: name.current.value,
+                photoURL:
+                  "https://avatars.githubusercontent.com/u/139048048?v=4",
+              };
+
+              dispatch(addUser(updatedUser));
               navigate("/browse");
-              dispatch(
-                addUser({
-                  uid,
-                  email,
-                  displayName,
-                  photoURL,
-                })
-              );
             })
             .catch((error) => {
               setErrorMessage(error.message);
@@ -71,7 +70,7 @@ const Login = () => {
       )
         .then((userCredential) => {
           const user = userCredential.user;
-          console.log("Signed in:", user);
+          // onAuthStateChanged will handle dispatch
           navigate("/browse");
         })
         .catch((error) => {
