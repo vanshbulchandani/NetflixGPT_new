@@ -5,57 +5,77 @@ import { auth } from "../utils/firebase";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
+  updateProfile,
 } from "firebase/auth";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
 
 const Login = () => {
   const [issignin, setsignin] = useState(true);
   const [ErrorMessage, setErrorMessage] = useState(null);
   const email = useRef(null);
   const password = useRef(null);
+  const name = useRef(null);
+  const navigate = useNavigate(); // fixed typo
+  const dispatch = useDispatch();
 
-  const toggle = () => {
-    setsignin(!issignin);
-  };
+  const toggle = () => setsignin(!issignin);
 
   const handleButtonClick = () => {
     const message = checkValidData(email.current.value, password.current.value);
-    console.log("Validation Message:", message);
     setErrorMessage(message);
-
     if (message) return;
+
     if (!issignin) {
+      // Sign up flow
       createUserWithEmailAndPassword(
         auth,
         email.current.value,
         password.current.value
       )
         .then((userCredential) => {
-          // Signed up
           const user = userCredential.user;
-          console.log(user);
-          // ...
+          console.log("Signed up:", user);
+
+          // Update profile with name after signup
+          updateProfile(user, {
+            displayName: name.current.value,
+            photoURL: "https://avatars.githubusercontent.com/u/139048048?v=4",
+          })
+            .then(() => {
+              const { uid, email, displayName, photoURL } = auth.currentUser;
+              console.log("Profile updated");
+              navigate("/browse");
+              dispatch(
+                addUser({
+                  uid,
+                  email,
+                  displayName,
+                  photoURL,
+                })
+              );
+            })
+            .catch((error) => {
+              setErrorMessage(error.message);
+            });
         })
         .catch((error) => {
-          const errorCode = error.code;
-          const errorMessage = error.message;
-          // ..
+          setErrorMessage(error.code + " - " + error.message);
         });
     } else {
+      // Sign in flow
       signInWithEmailAndPassword(
         auth,
         email.current.value,
         password.current.value
       )
         .then((userCredential) => {
-          // Signed in
           const user = userCredential.user;
-          console.log(user);
-          // ...
+          console.log("Signed in:", user);
+          navigate("/browse");
         })
         .catch((error) => {
-          const errorCode = error.code;
-          const errorMessage = error.message;
-          setErrorMessage(errorCode + "-" + errorMessage);
+          setErrorMessage(error.code + " - " + error.message);
         });
     }
   };
@@ -67,9 +87,10 @@ const Login = () => {
         <img
           src="https://assets.nflxext.com/ffe/siteui/vlv3/fa4630b1-ca1e-4788-94a9-eccef9f7af86/web/IN-en-20250407-TRIFECTA-perspective_43f6a235-9f3d-47ef-87e0-46185ab6a7e0_large.jpg"
           alt="Netflix Banner"
-          className=" top-0 left-0 w-full h-full object-cover -z-10"
+          className="top-0 left-0 w-full h-full object-cover -z-10"
         />
       </div>
+
       <form
         className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-black/75 p-10 w-3/12 max-w-md rounded-md text-white"
         onSubmit={(e) => e.preventDefault()}
@@ -82,6 +103,7 @@ const Login = () => {
           <input
             type="text"
             placeholder="Name"
+            ref={name}
             className="py-3 px-4 mb-4 w-full rounded bg-zinc-800 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-red-600"
           />
         )}
