@@ -52,7 +52,6 @@ const Login = () => {
               };
 
               dispatch(addUser(updatedUser));
-              navigate("/browse");
             })
             .catch((error) => {
               setErrorMessage(error.message);
@@ -71,7 +70,6 @@ const Login = () => {
         .then((userCredential) => {
           const user = userCredential.user;
           // onAuthStateChanged will handle dispatch
-          navigate("/browse");
         })
         .catch((error) => {
           setErrorMessage(error.code + " - " + error.message);
