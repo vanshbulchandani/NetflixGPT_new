@@ -4,15 +4,12 @@ import { useSelector } from "react-redux";
 
 const SecondaryContainer = () => {
   const movies = useSelector((store) => store.movies);
-  console.log("movies wala", movies.nowPlayingMovies);
 
   return (
-    <div className="relative z-20 -mt-25">
-      {/* z-20 to bring it above background */}
-      <div className="bg-black">
-        <div className="space-y-4">
-          {" "}
-          {/* Adjust space between movie lists */}
+    <div className="relative z-20 -mt-20 md:-mt-40">
+      {/* -mt-20 for small screens, -mt-40 for larger screens */}
+      <div className="bg-gradient-to-b from-black via-black/80 to-black">
+        <div className="space-y-8 md:space-y-12 pt-8 md:pt-16">
           <MovieList title="Now Playing" movies={movies.nowPlayingMovies} />
           <MovieList title="Popular" movies={movies.nowPlayingMovies} />
           <MovieList title="Top Rated" movies={movies.nowPlayingMovies} />

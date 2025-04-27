@@ -18,7 +18,7 @@ const VideoBackground = ({ movieId }) => {
 
   return (
     <div
-      className="absolute top-0 left-0 w-full h-[90vh] overflow-hidden -z-10"
+      className="w-full h-[90vh] relative overflow-hidden bg-black" // Changed from h-[75vh] to h-[90vh]
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
@@ -41,7 +41,7 @@ const VideoBackground = ({ movieId }) => {
       )}
 
       {/* Gradient overlay */}
-      <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-r from-black via-transparent to-transparent" />
+      <div className="absolute inset-0 bg-gradient-to-r from-black via-transparent to-transparent" />
     </div>
   );
 };

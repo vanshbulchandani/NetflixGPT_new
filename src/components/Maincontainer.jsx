@@ -4,22 +4,25 @@ import VideoTitle from "./VideoTitle";
 import VideoBackground from "./VideoBackground";
 
 const Maincontainer = () => {
-  useNowPlayingMovies(); // 👈 This will trigger the fetch and store update
+  useNowPlayingMovies(); // Fetch and update store
 
   const movies = useSelector((store) => store.movies?.nowPlayingMovies);
 
   if (!movies || movies.length === 0) return null;
 
   const mainMovie = movies[0];
-  console.log(mainMovie);
 
   return (
-    <div className="pt-[30%] bg-black md:pt-0">
-      <VideoTitle
-        title={mainMovie.original_title}
-        overview={mainMovie.overview}
-      />
-      <VideoBackground movieId={mainMovie.id} />
+    <div className="w-full bg-black">
+      <div className="relative w-full h-[100vh]">
+        {/* Title and Description */}
+        <VideoTitle
+          title={mainMovie.original_title}
+          overview={mainMovie.overview}
+        />
+        {/* Background Video */}
+        <VideoBackground movieId={mainMovie.id} />
+      </div>
     </div>
   );
 };
