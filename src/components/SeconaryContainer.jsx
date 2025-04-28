@@ -11,11 +11,9 @@ const SecondaryContainer = () => {
       <div className="bg-gradient-to-b from-black via-black/80 to-black">
         <div className="space-y-8 md:space-y-12 pt-8 md:pt-16">
           <MovieList title="Now Playing" movies={movies.nowPlayingMovies} />
-          <MovieList title="Popular" movies={movies.nowPlayingMovies} />
-          <MovieList title="Top Rated" movies={movies.nowPlayingMovies} />
-          <MovieList title="Upcoming" movies={movies.nowPlayingMovies} />
-          <MovieList title="Trending" movies={movies.nowPlayingMovies} />
-          <MovieList title="Action" movies={movies.nowPlayingMovies} />
+          <MovieList title="Popular" movies={movies.PopularMovies} />
+          <MovieList title="Top Rated" movies={movies.TopRatedMovies} />
+          <MovieList title="Upcoming" movies={movies.UpcomingMovies} />
         </div>
       </div>
     </div>
