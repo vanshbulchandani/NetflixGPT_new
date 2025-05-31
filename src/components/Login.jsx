@@ -10,6 +10,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { addUser } from "../utils/UserSlice";
+import { BG_URL } from "../utils/constants";
 
 const Login = () => {
   const [issignin, setsignin] = useState(true);
@@ -82,7 +83,7 @@ const Login = () => {
       <Header />
       <div className="absolute">
         <img
-          src="https://assets.nflxext.com/ffe/siteui/vlv3/fa4630b1-ca1e-4788-94a9-eccef9f7af86/web/IN-en-20250407-TRIFECTA-perspective_43f6a235-9f3d-47ef-87e0-46185ab6a7e0_large.jpg"
+          src={BG_URL}
           alt="Netflix Banner"
           className="top-0 left-0 w-full h-full object-cover -z-10"
         />
