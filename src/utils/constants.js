@@ -2,8 +2,7 @@ export const API_options = {
   method: "GET",
   headers: {
     accept: "application/json",
-    Authorization:
-      "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJkOWRlOTM1NTI0NjU5ODAyZGE4N2RhZjI2YzMyZmQwOSIsIm5iZiI6MTc0NTIzNTk1NC42MjUsInN1YiI6IjY4MDYyZmYyYjY1OTgyMjgxMmVlNGNjNiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.xZkovEWVmjIbe2KnbPKVznAIeyYrBq_Pdk6uCLHz7Sg",
+    Authorization: `Bearer ${import.meta.env.VITE_TMDB_API_KEY}`,
   },
 };
 
@@ -17,5 +16,4 @@ export const SUPPORTED_LANGUAGES = [
   { identifier: "spanish", name: "Spanish" },
 ];
 
-export const OPENAI_KEY =
-  "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";
+export const OPENAI_KEY = import.meta.env.VITE_OPENAI_API_KEY;

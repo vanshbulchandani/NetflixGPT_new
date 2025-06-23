@@ -1,10 +1,13 @@
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { API_options } from "../utils/constants";
 import { addTopRatedMovies } from "../utils/MovieSlice";
 
 const useTopRatedMovies = () => {
   const dispatch = useDispatch();
+
+  // ✅ Check Redux store for topRatedMovies
+  const topRatedMovies = useSelector((store) => store.movies.topRatedMovies);
 
   const getTopRatedMovies = async () => {
     const data = await fetch(
@@ -13,11 +16,15 @@ const useTopRatedMovies = () => {
     );
     const json = await data.json();
     console.log("top rated", json.results);
-    dispatch(addTopRatedMovies(json.results)); // ✅ pass the data here
+
+    dispatch(addTopRatedMovies(json.results));
   };
 
   useEffect(() => {
-    getTopRatedMovies();
+    // ✅ Only fetch if not already fetched
+    if (!topRatedMovies || topRatedMovies.length === 0) {
+      getTopRatedMovies();
+    }
   }, []);
 };
 

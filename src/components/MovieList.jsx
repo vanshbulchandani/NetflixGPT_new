@@ -7,13 +7,13 @@ const MovieList = ({ title, movies }) => {
   }
 
   return (
-    <div className="px-6 md:px-12 relative z-10">
-      {/* Section Title */}
-      <h1 className="text-xl md:text-3xl font-bold text-white mb-4">{title}</h1>
+    <div className="px-4 md:px-8">
+      <h1 className="text-2xl md:text-3xl font-semibold text-white mb-4">
+        {title}
+      </h1>
 
-      {/* Movie Cards Horizontal Scroll */}
-      <div className="flex overflow-x-auto scrollbar-thin scrollbar-thumb-gray-500 scrollbar-track-gray-800">
-        <div className="flex space-x-4 md:space-x-6">
+      <div className="flex overflow-x-scroll no-scrollbar">
+        <div className="flex gap-4 md:gap-6">
           {movies.map((movie) => (
             <Moviecard key={movie.id} PosterPath={movie.poster_path} />
           ))}

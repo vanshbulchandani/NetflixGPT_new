@@ -1,10 +1,13 @@
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { API_options } from "../utils/constants";
 import { addUpcomingMovies } from "../utils/MovieSlice";
 
-const useUpcomgMovies = () => {
+const useUpcomingMovies = () => {
   const dispatch = useDispatch();
+
+  // ✅ Access Redux store to check for existing data
+  const upcomingMovies = useSelector((store) => store.movies.upcomingMovies);
 
   const getUpcomingMovies = async () => {
     const data = await fetch(
@@ -12,13 +15,17 @@ const useUpcomgMovies = () => {
       API_options
     );
     const json = await data.json();
-    console.log("top rated", json.results);
-    dispatch(addUpcomingMovies(json.results)); // ✅ pass the data here
+    console.log("upcoming", json.results);
+
+    dispatch(addUpcomingMovies(json.results));
   };
 
   useEffect(() => {
-    getUpcomingMovies();
+    // ✅ Avoid refetching if data is already in store
+    if (!upcomingMovies || upcomingMovies.length === 0) {
+      getUpcomingMovies();
+    }
   }, []);
 };
 
-export default useUpcomgMovies;
+export default useUpcomingMovies;

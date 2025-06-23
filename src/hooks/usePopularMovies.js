@@ -1,10 +1,13 @@
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { API_options } from "../utils/constants";
 import { addPopularMovies } from "../utils/MovieSlice";
 
 const usePopularMovies = () => {
   const dispatch = useDispatch();
+
+  // ✅ Check if popularMovies already exist in the store
+  const popularMovies = useSelector((store) => store.movies.popularMovies);
 
   const getPopularMovies = async () => {
     const data = await fetch(
@@ -13,11 +16,15 @@ const usePopularMovies = () => {
     );
     const json = await data.json();
     console.log("popular", json.results);
-    dispatch(addPopularMovies(json.results)); // ✅ pass the data here
+
+    dispatch(addPopularMovies(json.results));
   };
 
   useEffect(() => {
-    getPopularMovies();
+    // ✅ Fetch only if not already in store
+    if (!popularMovies || popularMovies.length === 0) {
+      getPopularMovies();
+    }
   }, []);
 };
 
